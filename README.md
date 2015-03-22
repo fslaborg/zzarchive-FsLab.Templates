@@ -12,5 +12,5 @@ For example, when using mono on Mac, run:
 
 The repository currently hosts the following templates:
 
- * [Basic FsLab template](https://github.com/fslaborg/FsLab.Templates/archive/basic.zip)
-   - references FsLab and gives you a single script file with simple demo
+ * [Basic FsLab template](https://github.com/fslaborg/FsLab.Templates/archive/basic.zip) -
+   references FsLab and gives you a single script file with simple demo
