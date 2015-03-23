@@ -14,3 +14,6 @@ The repository currently hosts the following templates:
 
  * [Basic FsLab template](https://github.com/fslaborg/FsLab.Templates/archive/basic.zip) -
    references FsLab and gives you a single script file with simple demo
+
+ * [FsLab Journal template](https://github.com/fslaborg/FsLab.Templates/archive/basic.zip) (Visual Studio only) -
+   in addition to the above, this lets you write literate FsLab scripts and produce HTML or LaTeX reports
