@@ -15,10 +15,10 @@ The repository currently hosts the following templates:
 
  * [Basic FsLab template](https://github.com/fslaborg/FsLab.Templates/archive/basic.zip) -
    references FsLab and gives you a single script file with simple demo
-
  * [FsLab Journal template](https://github.com/fslaborg/FsLab.Templates/archive/journal-vs.zip) (Visual Studio only) -
-   in addition to the above, this lets you write literate FsLab scripts and produce HTML or LaTeX reports
-
+   in addition to the above, this template also lets you write literate FsLab scripts and produce HTML or LaTeX reports
+ * **FsLab Journal template** (Cross-platform) - cross-platform version of the above [Work in progress!]
+ 
 ### Building templates
 
 Visual Studio and Xamarin Studio should download FsLab packages automatically on build.
