@@ -8,7 +8,7 @@ Using the templates, you can start with FsLab in 3 simple steps:
  2. Build it to download FsLab packages
  3. Open scripts  in your editor & play!
 
-### Downloading templates
+### 1. Download a template
 
 To get started, download a branch with the template as a ZIP file and extract the files.
 The repository currently hosts the following templates:
@@ -19,7 +19,7 @@ The repository currently hosts the following templates:
    in addition to the above, this template also lets you write literate FsLab scripts and produce HTML or LaTeX reports
  * **FsLab Journal template** (Cross-platform) - cross-platform version of the above [Work in progress!]
  
-### Building templates
+### 2. Build the template
 
 Visual Studio and Xamarin Studio should download FsLab packages automatically on build.
 If this doesn't happen (or when using other editors), you need to explicitly run
@@ -31,7 +31,7 @@ For example, when using mono on Mac, run:
 
 This installs the FsLab dependencies into `packages` folder and you're ready to go!
 
-### Gettings tarted with FsLab
+### 3. Use FsLab for fun & profit!
 
 Once you have the template and packages, you can open the `Tutorial.fsx` file and start playing
 with FsLab. For more information, see the [Getting Started](http://fslab.org/getting-started/) page on www.fslab.org.
