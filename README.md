@@ -26,7 +26,7 @@ If this doesn't happen (or when using other editors), you need to explicitly run
 [`paket install`](http://fsprojects.github.io/Paket/paket-install.html).
 For example, when using mono on Mac, run:
 
-    mono .paket/paket.bootstrap.exe
+    mono .paket/paket.bootstrapper.exe
     mono .paket/paket.exe install
 
 This installs the FsLab dependencies into `packages` folder and you're ready to go!
