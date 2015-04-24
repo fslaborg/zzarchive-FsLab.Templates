@@ -13,23 +13,27 @@ Using the templates, you can start with FsLab in 3 simple steps:
 To get started, download a branch with the template as a ZIP file and extract the files.
 The repository currently hosts the following templates:
 
- * [Basic FsLab template](https://github.com/fslaborg/FsLab.Templates/archive/basic.zip) -
+ * [FsLab Basic template](https://github.com/fslaborg/FsLab.Templates/archive/basic.zip) -
    references FsLab and gives you a single script file with simple demo
- * [FsLab Journal template](https://github.com/fslaborg/FsLab.Templates/archive/journal-vs.zip) (Visual Studio only) -
+ * [FsLab Journal template](https://github.com/fslaborg/FsLab.Templates/archive/journal.zip) -
    in addition to the above, this template also lets you write literate FsLab scripts and produce HTML or LaTeX reports
- * **FsLab Journal template** (Cross-platform) - cross-platform version of the above [Work in progress!]
- 
+
 ### 2. Build the template
 
 Visual Studio and Xamarin Studio should download FsLab packages automatically on build.
-If this doesn't happen (or when using other editors), you need to explicitly run
-[`paket install`](http://fsprojects.github.io/Paket/paket-install.html).
-For example, when using mono on Mac, run:
+If this doesn't happen (or when using other editors), you need to explicitly install them.
 
-    mono .paket/paket.bootstrapper.exe
-    mono .paket/paket.exe install
+ - In the basic template, run [`paket install`](http://fsprojects.github.io/Paket/paket-install.html).
+   For example, when using mono on Mac, run:
 
-This installs the FsLab dependencies into `packages` folder and you're ready to go!
+        mono .paket/paket.bootstrapper.exe
+        mono .paket/paket.exe install
+
+ - In the journal template you can use build scripts `build.sh` and `build.cmd`. 
+   The following will process all journals and open them in a web browser:
+
+        chmod +x build.sh
+        ./build.sh run
 
 ### 3. Use FsLab for fun & profit!
 
