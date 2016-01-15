@@ -39,13 +39,13 @@ let ctx = ProcessingContext.Create(__SOURCE_DIRECTORY__).With(fun p ->
 
 open Suave
 open Suave.Web
-open Suave.Http
-open Suave.Http.Files
+open Suave.Files
 open Suave.Sockets
 open Suave.Sockets.Control
 open Suave.Sockets.AsyncSocket
 open Suave.WebSocket
 open Suave.Utils
+open Suave.Operators
 
 let localPort = 8901
 
@@ -62,7 +62,7 @@ let socketHandler (webSocket : WebSocket) =
       let! refreshed =
         Control.Async.AwaitEvent(refreshEvent.Publish)
         |> Suave.Sockets.SocketOp.ofAsync
-      do! webSocket.send Text (UTF8.bytes "refreshed") true
+      do! webSocket.send Text (System.Text.Encoding.UTF8.GetBytes "refreshed") true
   }
 
 let startWebServer fileName =
@@ -74,11 +74,11 @@ let startWebServer fileName =
             homeFolder = Some ctx.Output }
     let app =
       choose [
-        Applicatives.path "/websocket" >>= handShake socketHandler
+        Filters.path "/websocket" >=> handShake socketHandler
         Writers.setHeader "Cache-Control" "no-cache, no-store, must-revalidate"
-        >>= Writers.setHeader "Pragma" "no-cache"
-        >>= Writers.setHeader "Expires" "0"
-        >>= browseHome ]
+        >=> Writers.setHeader "Pragma" "no-cache"
+        >=> Writers.setHeader "Expires" "0"
+        >=> browseHome ]
     startWebServerAsync serverConfig app |> snd |> Async.Start
 
 
@@ -146,7 +146,7 @@ Target "webpreview" (fun _ ->
 )
 
 Target "pdf" (fun _ ->
-  for tex in !! (ctx.Output @@ "*.tex" ) do
+  for tex in !! (ctx.Output </> "*.tex" ) do
     ExecProcess (fun info ->
       info.Arguments <- "-interaction=nonstopmode \"" + (IO.Path.GetFileName(tex)) + "\""
       info.WorkingDirectory <- ctx.Output
