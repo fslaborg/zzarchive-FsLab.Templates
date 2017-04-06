@@ -4,6 +4,7 @@ then
   MONO=""
 else
   MONO="mono"
+  export MONO_MANAGED_WATCHER="false"
 fi
 
 if test "$1" = "quickrun"

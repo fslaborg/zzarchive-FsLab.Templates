@@ -18,6 +18,7 @@ open FsLab
 open System
 open System.Text
 open FSharp.Literate
+open System.IO
 
 // --------------------------------------------------------------------------------------
 // Runner configuration - You can change some basic settings of ProcessingContext here
@@ -78,13 +79,19 @@ let startWebServer fileName =
         >=> Files.browseHome ]
     startWebServerAsync serverConfig app |> snd |> Async.Start
 
-let handleWatcherEvents (e:IO.FileSystemEventArgs) =
-    let fi = fileInfo e.FullPath
-    traceImportant <| sprintf "%s was changed." fi.Name
-    if fi.Attributes.HasFlag IO.FileAttributes.Hidden ||
-       fi.Attributes.HasFlag IO.FileAttributes.Directory then ()
-    else Journal.updateJournals ctx |> ignore
-    refreshEvent.Trigger()
+let handleFileChanges (changes:seq<FileChange>) =
+    Seq.iter (fun (fc:FileChange) -> traceImportant <| sprintf "%s was changed"  fc.Name) changes
+    
+    let onlyHiddenAndDirectories =
+        changes
+        |> Seq.map (fun (fc:FileChange) -> fileInfo fc.Name)
+        |> Seq.map (fun (fi:FileInfo) -> fi.Attributes.HasFlag IO.FileAttributes.Hidden ||
+                                         fi.Attributes.HasFlag IO.FileAttributes.Directory)
+        |> Seq.reduce (&&)
+     
+    if not onlyHiddenAndDirectories then
+        Journal.updateJournals ctx |> ignore
+        refreshEvent.Trigger()
 
 // --------------------------------------------------------------------------------------
 // Build targets - for example, run `build GenerateLatex` to produce latex output
@@ -118,30 +125,25 @@ Target "latex" (fun _ ->
 )
 
 Target "run" (fun _ ->
-    use watcher = new System.IO.FileSystemWatcher(ctx.Root, "*.fsx")
-    watcher.EnableRaisingEvents <- true
-    watcher.IncludeSubdirectories <- true
-    watcher.Changed.Add(handleWatcherEvents)
-    watcher.Created.Add(handleWatcherEvents)
-    watcher.Renamed.Add(handleWatcherEvents)
+    let fsxFiles = System.IO.Path.Combine(ctx.Root, "*.fsx")
+    use watcher = !! fsxFiles |> WatchChanges handleFileChanges
     let fileName = (defaultArg indexJournal.Value "")
     startWebServer fileName
 
     Diagnostics.Process.Start(sprintf "http://localhost:%d/%s" localPort fileName) |> ignore
     System.Console.ReadKey() |> ignore
+    watcher.Dispose()
 )
 
 Target "webpreview" (fun _ ->
-    use watcher = new System.IO.FileSystemWatcher(ctx.Root, "*.fsx")
-    watcher.EnableRaisingEvents <- true
-    watcher.IncludeSubdirectories <- true
-    watcher.Changed.Add(handleWatcherEvents)
-    watcher.Created.Add(handleWatcherEvents)
-    watcher.Renamed.Add(handleWatcherEvents)
+    let fsxFiles = System.IO.Path.Combine(ctx.Root, "*.fsx")
+    use watcher = !! fsxFiles |> WatchChanges handleFileChanges
+ 
     startWebServer (defaultArg indexJournal.Value "")
 
     traceImportant "Waiting for journal edits. Press any key to stop."
     System.Threading.Thread.Sleep -1
+    watcher.Dispose()
 )
 
 Target "pdf" (fun _ ->
